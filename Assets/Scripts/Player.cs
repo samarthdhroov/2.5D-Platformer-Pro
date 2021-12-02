@@ -16,9 +16,18 @@ public class Player : MonoBehaviour
 
     private bool _jumped;
 
+    private int _playerCoins;
+
+    private UIManager _UIManager;
+
     void Start()
     {
         _characterController = GetComponent<CharacterController>();
+
+        if(GameObject.Find("Canvas").GetComponent<UIManager>() != null)
+        {
+            _UIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        }
     }
 
     void Update()
@@ -58,7 +67,13 @@ public class Player : MonoBehaviour
         _velocity.y = _CacheYVelocity;
 
         _characterController.Move(_velocity * Time.deltaTime);
-       
-        
     }
+
+    public void updatePlayerCoins()
+    {
+        _playerCoins++;
+        _UIManager.updateCoinScoreDisplay(_playerCoins);
+
+    }
+
 }
