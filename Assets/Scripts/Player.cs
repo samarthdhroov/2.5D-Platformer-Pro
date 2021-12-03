@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class Player : MonoBehaviour
 
     private UIManager _UIManager;
 
+    private int _lives = 3;
+
     void Start()
     {
         _characterController = GetComponent<CharacterController>();
@@ -27,6 +30,8 @@ public class Player : MonoBehaviour
         if(GameObject.Find("Canvas").GetComponent<UIManager>() != null)
         {
             _UIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+
+            _UIManager.updateLivesText(_lives);
         }
     }
 
@@ -67,6 +72,8 @@ public class Player : MonoBehaviour
         _velocity.y = _CacheYVelocity;
 
         _characterController.Move(_velocity * Time.deltaTime);
+
+        
     }
 
     public void updatePlayerCoins()
@@ -74,6 +81,18 @@ public class Player : MonoBehaviour
         _playerCoins++;
         _UIManager.updateCoinScoreDisplay(_playerCoins);
 
+    }
+
+    public void reduceLives()
+    {
+        _lives--;
+        _UIManager.updateLivesText(_lives);
+
+        if (_lives < 1)
+        {
+            SceneManager.LoadScene(0); 
+        }
+       
     }
 
 }
